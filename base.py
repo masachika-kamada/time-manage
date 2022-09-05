@@ -2,6 +2,7 @@ import time
 import threading
 import sys
 import PySimpleGUI as sg
+from gui_image import create_layout
 
 
 # スレッド処理のクラス
@@ -43,10 +44,7 @@ def main():
     r = Receive()
 
     # ウインドウの表示、設定
-    sg.theme("BluePurple")
-    layout = [[sg.Text("処理の実行、変更、停止を行います:"), sg.Text(size=(15, 1), key="-OUTPUT-")],
-              [sg.Button("Start"), sg.Button("Change"), sg.Button("Stop")]]
-    window = sg.Window("Pattern 2B", layout)
+    window = sg.Window("タイマネ", create_layout(), finalize=True)
 
     while True:
 
@@ -54,15 +52,10 @@ def main():
         print(event, values)
 
         # ボタンの処理内容
-        if event == "Start":
-            window["-OUTPUT-"].update("実行中")
+        if event == "START":
             startEvent(r)
 
-        elif event == "Change":
-            window["-OUTPUT-"].update("変更しました")
-            changeEvent(r)
-
-        elif event == "Stop":
+        elif event == "STOP":
             finishEvent(r)
 
         elif event is None:

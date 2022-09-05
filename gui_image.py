@@ -1,58 +1,54 @@
 import PySimpleGUI as sg
 import sys
-import time
 
 
-class GUI:
+def create_layout():
     font = ("游明朝", 14)
-    input_text_size = (2, 1)
+    sg.theme("GreenMono")
+    setting = [
+        [__text_temp("インターバル : ", font),
+         __time_input_text_temp("interval", font, default_text="1"),
+         __text_temp("秒", font)],
+    ]
+    layout = [
+        [sg.Frame("設定", setting, font=font, pad=[(10, 10), (10, 0)])],
+        [sg.Button("START", font=font, pad=((40, 10), (10, 10))),
+         sg.Button("STOP", font=font, pad=((40, 10), (10, 10)))]
+    ]
+    return layout
 
-    def __init__(self):
-        sg.theme("GreenMono")
-        setting = [
-            [self.text_temp("インターバル : "),
-             self.time_input_text_temp("interval", default_text="1"),
-             self.text_temp("秒")],
-        ]
-        self.layout = [
-            [sg.Frame("設定", setting, font=self.font, pad=[(10, 10), (10, 0)])],
-            [sg.Button("START", font=self.font, pad=((40, 10), (10, 10))),
-             sg.Button("STOP", font=self.font, pad=((40, 10), (10, 10)))]
-        ]
 
-    def time_input_text_temp(self, key, default_text=""):
-        return sg.InputText(
-            size=(3, 1),
-            justification="right",
-            font=self.font,
-            key=key,
-            default_text=default_text
-        )
+def __time_input_text_temp(key, font, default_text=""):
+    return sg.InputText(
+        size=(3, 1),
+        justification="right",
+        key=key,
+        font=font,
+        default_text=default_text
+    )
 
-    def text_temp(self, text):
-        return sg.Text(
-            text=text,
-            font=self.font
-        )
 
-    def display(self):
-        window = sg.Window("タイマネ", self.layout)
-        while True:
-            event, values = window.read()
-            if event == "START":
-                while event == "START":
-                    event, values = window.read(timeout=1000)
-                    print("hoge")
-                    time.sleep(1)
+def __text_temp(text, font):
+    return sg.Text(
+        text=text,
+        font=font
+    )
 
-            elif event == "STOP":
-                print("fuga")
 
-            elif event == sg.WIN_CLOSED:
-                window.close()
-                sys.exit()
+def display():
+    window = sg.Window("タイマネ", create_layout())
+    while True:
+        event, values = window.read()
+        if event == "START":
+            print("hoge")
+
+        elif event == "STOP":
+            print("fuga")
+
+        elif event == sg.WIN_CLOSED:
+            window.close()
+            sys.exit()
 
 
 if __name__ == "__main__":
-    gui = GUI()
-    gui.display()
+    display()
