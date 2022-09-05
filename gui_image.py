@@ -23,7 +23,7 @@ class GUI:
     def time_input_text_temp(self, key, default_text=""):
         return sg.InputText(
             size=(3, 1),
-            justification='right',
+            justification="right",
             font=self.font,
             key=key,
             default_text=default_text

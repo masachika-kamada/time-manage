@@ -43,10 +43,10 @@ def main():
     r = Receive()
 
     # ウインドウの表示、設定
-    sg.theme('BluePurple')
-    layout = [[sg.Text('処理の実行、変更、停止を行います:'), sg.Text(size=(15, 1), key='-OUTPUT-')],
-              [sg.Button('Start'), sg.Button('Change'), sg.Button('Stop')]]
-    window = sg.Window('Pattern 2B', layout)
+    sg.theme("BluePurple")
+    layout = [[sg.Text("処理の実行、変更、停止を行います:"), sg.Text(size=(15, 1), key="-OUTPUT-")],
+              [sg.Button("Start"), sg.Button("Change"), sg.Button("Stop")]]
+    window = sg.Window("Pattern 2B", layout)
 
     while True:
 
@@ -54,15 +54,15 @@ def main():
         print(event, values)
 
         # ボタンの処理内容
-        if event == 'Start':
-            window['-OUTPUT-'].update('実行中')
+        if event == "Start":
+            window["-OUTPUT-"].update("実行中")
             startEvent(r)
 
-        elif event == 'Change':
-            window['-OUTPUT-'].update('変更しました')
+        elif event == "Change":
+            window["-OUTPUT-"].update("変更しました")
             changeEvent(r)
 
-        elif event == 'Stop':
+        elif event == "Stop":
             finishEvent(r)
 
         elif event is None:
@@ -71,5 +71,5 @@ def main():
             sys.exit()  # アプリ終了
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

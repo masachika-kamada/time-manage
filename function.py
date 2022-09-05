@@ -10,12 +10,12 @@ for i in range(10):
 
     hwnd = win32gui.FindWindow(None, win_name)
     threadid, pid = win32process.GetWindowThreadProcessId(hwnd)
-    print('pid=' + str(pid))
+    print("pid=" + str(pid))
 
-    _wmi = GetObject('winmgmts:')
+    _wmi = GetObject("winmgmts:")
 
     # collect all the running processes
-    processes = _wmi.ExecQuery('Select * from win32_process')
+    processes = _wmi.ExecQuery("Select * from win32_process")
     for p in processes:
         if isinstance(p.ProcessId, int) and p.ProcessId == pid:
             print((p.ProcessId, p.ExecutablePath, p.CommandLine, p.Name))
