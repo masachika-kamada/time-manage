@@ -4,7 +4,7 @@ import win32gui
 import time
 
 
-for i in range(10):
+def get_foreground_window():
     win_name = win32gui.GetWindowText(win32gui.GetForegroundWindow())
     print(win_name)
 
@@ -12,12 +12,19 @@ for i in range(10):
     threadid, pid = win32process.GetWindowThreadProcessId(hwnd)
     print("pid=" + str(pid))
 
-    _wmi = GetObject("winmgmts:")
+    try:
+        _wmi = GetObject("winmgmts:")
 
-    # collect all the running processes
-    processes = _wmi.ExecQuery("Select * from win32_process")
-    for p in processes:
-        if isinstance(p.ProcessId, int) and p.ProcessId == pid:
-            print((p.ProcessId, p.ExecutablePath, p.CommandLine, p.Name))
+        # collect all the running processes
+        processes = _wmi.ExecQuery("Select * from win32_process")
+        for p in processes:
+            if isinstance(p.ProcessId, int) and p.ProcessId == pid:
+                print((p.ProcessId, p.ExecutablePath, p.Name))
+    except Exception as e:
+        print(e)
 
-    time.sleep(1)
+
+if __name__ == "__main__":
+    for i in range(10):
+        get_foreground_window()
+        time.sleep(1)
