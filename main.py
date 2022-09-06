@@ -25,8 +25,6 @@ class Recorder():
                 prev = win_name
                 pid = win32process.GetWindowThreadProcessId(win32gui.GetForegroundWindow())
                 exe_name = psutil.Process(pid[-1]).name()
-                print(win_name, exe_name)
-                datetime.datetime.now().strftime("%Y%m%d-%H:%M:%S")
                 with open(fname, mode="a", newline="", encoding="shift-jis", errors="ignore") as f:
                     writer = csv.writer(f)
                     now = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
