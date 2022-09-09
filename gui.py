@@ -3,6 +3,16 @@ import sys
 
 
 def create_layout():
+    layout = [
+        [sg.TabGroup([[
+            sg.Tab("計測", __create_measure(), key='tab1'),
+            sg.Tab("可視化", __create_file_select(), key='tab2'),
+        ]])],
+    ]
+    return layout
+
+
+def __create_measure():
     font = ("游明朝", 14)
     sg.theme("GreenMono")
     setting = [
@@ -11,9 +21,23 @@ def create_layout():
          __text_temp("秒", font)],
     ]
     layout = [
+        [sg.Text("00:00:00", font=("游明朝", 34), pad=[(37, 0), (20, 0)], justification="center", key="-OUTPUT-")],
         [sg.Frame("設定", setting, font=font, pad=[(10, 10), (10, 0)])],
-        [sg.Button("START", font=font, pad=((40, 10), (10, 10))),
-         sg.Button("STOP", font=font, pad=((40, 10), (10, 10)))]
+        [sg.Button("START / STOP", font=font, pad=((43, 10), (20, 15)))]
+    ]
+    return layout
+
+
+def __create_file_select():
+    font = ("游明朝", 12)
+    sg.theme("GreenMono")
+    layout = [
+        [sg.Text("ファイルを選択して下さい", font=font, pad=[(15, 0), (15, 0)])],
+        [sg.InputText(size=(21, 1), pad=[(15, 0), (0, 0)]), sg.FileBrowse(key="file")],
+        [sg.Button("実行ファイル / 円グラフ", font=font, pad=((15, 10), (7, 0)))],
+        [sg.Button("実行ファイル / 棒グラフ", font=font, pad=((15, 10), (1, 0)))],
+        [sg.Button("閲覧ページ / 円グラフ", font=font, pad=((15, 10), (1, 0)))],
+        [sg.Button("閲覧ページ / 棒グラフ", font=font, pad=((15, 10), (1, 10)))],
     ]
     return layout
 
@@ -35,20 +59,11 @@ def __text_temp(text, font):
     )
 
 
-def display():
-    window = sg.Window("タイマネ", create_layout())
+if __name__ == "__main__":
+    window = sg.Window('My window with tabs', create_layout())
+
     while True:
         event, values = window.read()
-        if event == "START":
-            print("hoge")
-
-        elif event == "STOP":
-            print("fuga")
-
-        elif event == sg.WIN_CLOSED:
-            window.close()
-            sys.exit()
-
-
-if __name__ == "__main__":
-    display()
+        print(event,values)
+        if event == sg.WIN_CLOSED:
+            break
