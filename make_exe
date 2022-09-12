@@ -1,1 +1,1 @@
-pyinstaller main.py --onefile --noconsole --clean --name timane --icon=timane2.ico
+pyinstaller main2.py --onefile --noconsole --clean --name timane --icon=timane2.ico
