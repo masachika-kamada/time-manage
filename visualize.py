@@ -71,6 +71,10 @@ def make_pie_chart(d):
     labels = list(d.keys())
     sizes = list(d.values())
     max_label_len = max([len(label) for label in labels])
+    if max_label_len > 70:
+        max_label_len = 70
+        labels = [label[:70] + "..." if len(label) > 70 else label for label in labels]
+
     print(max_label_len)
     if max_label_len <= 10:
         fig_width = 7
@@ -110,6 +114,9 @@ def make_table(d):
     for i in range(len(sizes)):
         sizes[i] = str(datetime.timedelta(seconds=sizes[i]))
     max_label_len = max([len(label) for label in labels])
+    if max_label_len > 70:
+        max_label_len = 70
+        labels = [label[:70] + "..." if len(label) > 70 else label for label in labels]
 
     width = (max_label_len + 10) * 0.186
     height = (len(labels) + 3) * 0.5
