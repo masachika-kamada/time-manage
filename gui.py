@@ -1,5 +1,4 @@
 import PySimpleGUI as sg
-import sys
 
 
 def create_layout():
@@ -35,9 +34,9 @@ def __create_file_select():
         [sg.Text("ファイルを選択して下さい", font=font, pad=[(15, 0), (15, 0)])],
         [sg.InputText(size=(21, 1), pad=[(15, 0), (0, 0)]), sg.FileBrowse(key="file")],
         [sg.Button("実行ファイル / 円グラフ", font=font, pad=((15, 10), (7, 0)))],
-        [sg.Button("実行ファイル / 棒グラフ", font=font, pad=((15, 10), (1, 0)))],
+        [sg.Button("実行ファイル / 表", font=font, pad=((15, 10), (1, 0)))],
         [sg.Button("閲覧ページ / 円グラフ", font=font, pad=((15, 10), (1, 0)))],
-        [sg.Button("閲覧ページ / 棒グラフ", font=font, pad=((15, 10), (1, 10)))],
+        [sg.Button("閲覧ページ / 表", font=font, pad=((15, 10), (1, 10)))],
     ]
     return layout
 

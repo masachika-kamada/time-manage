@@ -77,14 +77,14 @@ def main():
         elif event == "実行ファイル / 円グラフ":
             show_result(values["file"], "exe", "pie")
 
-        elif event == "実行ファイル / 棒グラフ":
-            show_result(values["file"], "exe", "bar")
+        elif event == "実行ファイル / 表":
+            show_result(values["file"], "exe", "table")
 
         elif event == "閲覧ページ / 円グラフ":
             show_result(values["file"], "page", "pie")
 
-        elif event == "閲覧ページ / 棒グラフ":
-            show_result(values["file"], "page", "bar")
+        elif event == "閲覧ページ / 表":
+            show_result(values["file"], "page", "table")
 
         elif event == sg.WIN_CLOSED:
             r.finishEvent()
