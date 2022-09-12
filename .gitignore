@@ -2,6 +2,6 @@
 __pycache__/
 *.csv
 *.spec
-build/
-dist/
+build*/
+dist*/
 *.ico

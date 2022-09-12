@@ -2,8 +2,6 @@ import csv
 import datetime
 from pprint import pprint
 import matplotlib.pyplot as plt
-import numpy as np
-import seaborn as sns
 
 
 def show_result(filename, data_mode, chart_mode):
@@ -104,13 +102,6 @@ def make_pie_chart(d):
     plt.xlim(*xrange)
     plt.legend(bbox_to_anchor=(legend_x, 0.85), loc="upper left", borderaxespad=0, fontsize=14)
     plt.show()
-
-
-# def make_bar_chart(d):
-#     labels = list(d.keys())
-#     sizes = list(d.values())
-#     sns.barplot(x=sizes, y=labels, orient="h", palette="Blues_d", linewidth=0.5, edgecolor="black", saturation=0.5, ci=None, errcolor="black", errwidth=1)
-#     plt.show()
 
 
 def make_table(d):
