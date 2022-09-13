@@ -9,19 +9,22 @@ import win32process
 import psutil
 import csv
 from gui import create_layout
+from visualize import show_result
 
 
 # スレッド処理のクラス
 class Recorder():
+    dir_ref = "./timane_csvdata"
+
     def __init__(self):  # 初期化
         self.ROOP = False  # ループのフラグ
-        if not os.path.exists("timane"):
-            os.mkdir("timane")
+        if not os.path.exists(self.dir_ref):
+            os.mkdir(self.dir_ref)
 
     # ループ処理関数
     def __target(self):
         prev = ""
-        fname = datetime.datetime.now().strftime("timane/%Y%m%d_%H%M%S.csv")
+        fname = self.dir_ref + datetime.datetime.now().strftime("/%Y%m%d.csv")
         while self.ROOP:
             win_name = win32gui.GetWindowText(win32gui.GetForegroundWindow())
             if win_name != prev:
@@ -46,10 +49,6 @@ class Recorder():
         self.INTERVAL = int(interval)
         self.__start()
 
-    def pauseEvent(self):
-        print("=== PAUSE ===")
-        self.ROOP = False
-
     def finishEvent(self):  # STOPボタン押下処理
         print("=== STOP ===")
         self.ROOP = False  # ループ停止->自動的にスレッド破棄
@@ -58,28 +57,50 @@ class Recorder():
 def main():
     # スレッド処理のインスタンス生成
     r = Recorder()
+    is_running = False
+    start_time = 0
 
     # ウインドウの表示、設定
     window = sg.Window("タイマネ", create_layout(), finalize=True)
 
     while True:
 
-        event, values = window.read()
+        event, values = window.read(timeout=10)
 
         # ボタンの処理内容
-        if event == "START":
-            r.startEvent(values["interval"])
+        if event == "START / STOP":
+            is_running = not is_running
+            if is_running:
+                r.startEvent(values["interval"])
+                start_time = datetime.datetime.now()
+            else:
+                r.finishEvent()
 
-        elif event == "PAUSE":
-            r.pauseEvent()
+        elif event == "実行ファイル / 円グラフ":
+            show_result(values["file"], "exe", "pie")
 
-        elif event == "STOP":
-            r.finishEvent()
+        elif event == "実行ファイル / 表":
+            show_result(values["file"], "exe", "table")
+
+        elif event == "閲覧ページ / 円グラフ":
+            show_result(values["file"], "page", "pie")
+
+        elif event == "閲覧ページ / 表":
+            show_result(values["file"], "page", "table")
 
         elif event == sg.WIN_CLOSED:
             r.finishEvent()
             window.close()
             sys.exit()
+
+        # タイマーの表示
+        if is_running:
+            now = datetime.datetime.now()
+            elapsed_time = now - start_time
+            h = elapsed_time.seconds // 3600
+            m = elapsed_time.seconds % 3600 // 60
+            s = elapsed_time.seconds % 60
+            window["-OUTPUT-"].update(f"{h:02d}:{m:02d}:{s:02d}")
 
 
 if __name__ == "__main__":

@@ -2,8 +2,6 @@ import csv
 import datetime
 from pprint import pprint
 import matplotlib.pyplot as plt
-import numpy as np
-import seaborn as sns
 
 
 def show_result(filename, data_mode, chart_mode):
@@ -38,7 +36,7 @@ def calc_time_diff(l):
             continue
         l[i][0] = int((prev - t).total_seconds())
         prev = t
-        if l[i][1] == "タイマネ":
+        if "timane" in l[i][2]:
             timane_idx.append(i)
     for i in timane_idx:
         l.pop(i)
@@ -73,6 +71,10 @@ def make_pie_chart(d):
     labels = list(d.keys())
     sizes = list(d.values())
     max_label_len = max([len(label) for label in labels])
+    if max_label_len > 70:
+        max_label_len = 70
+        labels = [label[:70] + "..." if len(label) > 70 else label for label in labels]
+
     print(max_label_len)
     if max_label_len <= 10:
         fig_width = 7
@@ -106,19 +108,15 @@ def make_pie_chart(d):
     plt.show()
 
 
-# def make_bar_chart(d):
-#     labels = list(d.keys())
-#     sizes = list(d.values())
-#     sns.barplot(x=sizes, y=labels, orient="h", palette="Blues_d", linewidth=0.5, edgecolor="black", saturation=0.5, ci=None, errcolor="black", errwidth=1)
-#     plt.show()
-
-
 def make_table(d):
     labels = list(d.keys())
     sizes = list(d.values())
     for i in range(len(sizes)):
         sizes[i] = str(datetime.timedelta(seconds=sizes[i]))
     max_label_len = max([len(label) for label in labels])
+    if max_label_len > 70:
+        max_label_len = 70
+        labels = [label[:70] + "..." if len(label) > 70 else label for label in labels]
 
     width = (max_label_len + 10) * 0.186
     height = (len(labels) + 3) * 0.5
