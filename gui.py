@@ -6,6 +6,7 @@ def create_layout():
         [sg.TabGroup([[
             sg.Tab("計測", __create_measure(), key='tab1'),
             sg.Tab("可視化", __create_file_select(), key='tab2'),
+            sg.Tab("比較・可視化", __create_file_compare(), key='tab3'),
         ]])],
     ]
     return layout
@@ -37,6 +38,19 @@ def __create_file_select():
         [sg.Button("実行ファイル / 表", font=font, pad=((15, 10), (1, 0)))],
         [sg.Button("閲覧ページ / 円グラフ", font=font, pad=((15, 10), (1, 0)))],
         [sg.Button("閲覧ページ / 表", font=font, pad=((15, 10), (1, 10)))],
+    ]
+    return layout
+
+
+def __create_file_compare():
+    font = ("游明朝", 12)
+    sg.theme("GreenMono")
+    layout = [
+        [sg.Text("ファイルを選択して下さい", font=font, pad=[(15, 0), (15, 0)])],
+        [sg.Text("①", font=font, pad=[(15, 0), (0, 0)]), sg.InputText(size=(17, 1)), sg.FileBrowse(key="file1")],
+        [sg.Text("②", font=font, pad=[(15, 0), (0, 0)]), sg.InputText(size=(17, 1)), sg.FileBrowse(key="file2")],
+        [sg.Button("実行ファイル / 円グラフ", font=font, pad=((15, 10), (7, 0)))],
+        [sg.Button("閲覧ページ / 円グラフ", font=font, pad=((15, 10), (1, 0)))],
     ]
     return layout
 

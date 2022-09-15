@@ -8,6 +8,7 @@ import win32gui
 import win32process
 import psutil
 import csv
+import matplotlib.pyplot as plt
 from gui import create_layout
 from visualize import show_result
 
@@ -87,6 +88,16 @@ def main():
 
         elif event == "閲覧ページ / 表":
             show_result(values["file"], "page", "table")
+
+        elif event == "実行ファイル / 円グラフ0":
+            show_result(values["file1"], "exe", "pie", "user1")
+            show_result(values["file2"], "exe", "pie", "user2")
+            plt.show()
+
+        elif event == "閲覧ページ / 円グラフ1":
+            show_result(values["file1"], "page", "pie", "user1")
+            show_result(values["file2"], "page", "pie", "user2")
+            plt.show()
 
         elif event == sg.WIN_CLOSED:
             r.finishEvent()

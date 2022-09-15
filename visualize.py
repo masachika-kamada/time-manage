@@ -4,7 +4,7 @@ from pprint import pprint
 import matplotlib.pyplot as plt
 
 
-def show_result(filename, data_mode, chart_mode):
+def show_result(filename, data_mode, chart_mode, win_name="result"):
     if filename == "":
         return
     data = read_csv(filename)
@@ -15,9 +15,9 @@ def show_result(filename, data_mode, chart_mode):
         data = calc_page_time(data)
     data = sort_and_cut(data, 10)
     if chart_mode == "pie":
-        make_pie_chart(data)
+        make_pie_chart(data, win_name)
     elif chart_mode == "table":
-        make_table(data)
+        make_table(data, win_name)
 
 
 def read_csv(filename):
@@ -67,7 +67,7 @@ def sort_and_cut(d, n):
     return dict(sorted(d.items(), key=lambda x: x[1], reverse=True)[:n])
 
 
-def make_pie_chart(d):
+def make_pie_chart(d, win_name):
     labels = list(d.keys())
     sizes = list(d.values())
     max_label_len = max([len(label) for label in labels])
@@ -100,15 +100,16 @@ def make_pie_chart(d):
         fig_width = 16
         xrange = (-1, 7.8)
         legend_x = 0.2
-    plt.figure(figsize=(fig_width, 5))
+    plt.figure(win_name, figsize=(fig_width, 5))
     plt.pie(sizes, labels=labels, autopct="%1.1f%%", counterclock=False, startangle=90, labeldistance=None, center=(0, 0))
     plt.axis("equal")
     plt.xlim(*xrange)
     plt.legend(bbox_to_anchor=(legend_x, 0.85), loc="upper left", borderaxespad=0, fontsize=14)
-    plt.show()
+    if win_name == "result":
+        plt.show()
 
 
-def make_table(d):
+def make_table(d, win_name):
     labels = list(d.keys())
     sizes = list(d.values())
     for i in range(len(sizes)):
@@ -120,7 +121,7 @@ def make_table(d):
 
     width = (max_label_len + 10) * 0.186
     height = (len(labels) + 3) * 0.5
-    plt.figure(figsize=(width, height))
+    plt.figure(win_name, figsize=(width, height))
     plt.axis("off")
     plt.axis("tight")
 
@@ -136,7 +137,8 @@ def make_table(d):
     table[0, 1].set_text_props(color="w")
     table.auto_set_font_size(False)
     table.set_fontsize(13)
-    plt.show()
+    if win_name == "result":
+        plt.show()
 
 
 if __name__ == "__main__":
