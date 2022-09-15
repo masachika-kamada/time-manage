@@ -21,18 +21,19 @@ class Recorder():
         self.ROOP = False  # ループのフラグ
         if not os.path.exists(self.dir_ref):
             os.mkdir(self.dir_ref)
+        self.fname = self.dir_ref + datetime.datetime.now().strftime("/%Y%m%d.csv")
 
     # ループ処理関数
     def __target(self):
         prev = ""
-        fname = self.dir_ref + datetime.datetime.now().strftime("/%Y%m%d.csv")
         while self.ROOP:
             win_name = win32gui.GetWindowText(win32gui.GetForegroundWindow())
+            print(win_name, datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S"))
             if win_name != prev:
                 prev = win_name
                 pid = win32process.GetWindowThreadProcessId(win32gui.GetForegroundWindow())
                 exe_name = psutil.Process(pid[-1]).name()
-                with open(fname, mode="a", newline="", encoding="shift-jis", errors="ignore") as f:
+                with open(self.fname, mode="a", newline="", encoding="shift-jis", errors="ignore") as f:
                     writer = csv.writer(f)
                     now = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
                     writer.writerow([now, win_name, exe_name])
@@ -51,6 +52,10 @@ class Recorder():
         self.__start()
 
     def finishEvent(self):  # STOPボタン押下処理
+        with open(self.fname, mode="a", newline="", encoding="shift-jis", errors="ignore") as f:
+            writer = csv.writer(f)
+            now = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
+            writer.writerow([now, "タイマネ", "python.exe"])
         print("=== STOP ===")
         self.ROOP = False  # ループ停止->自動的にスレッド破棄
 
