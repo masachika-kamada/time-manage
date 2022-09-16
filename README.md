@@ -6,7 +6,8 @@
 
 ## ツールのダウンロード
 
-使用するには [こちら](https://github.com/masachika-kamada/time-manage/releases/tag/v1.0.0) のリリースページから実行ファイル (timane.exe) をダウンロードしてください
+使用するには [こちら](https://github.com/masachika-kamada/time-manage/releases/tag/v1.0.0) のリリースページから実行ファイル (timane.exe) をダウンロードしてください<br>
+※メモリが貧弱な場合、timane.zip をダウンロード、展開し、フォルダ内の timane.exe を実行してください
 
 ## 使い方
 
@@ -16,9 +17,11 @@
 
 ![](./images/measure.png)
 
-2. START / STOP ボタンを押すことで、タイマーが動き出し、作業の記録を開始します
+2. インターバルは作業を記録する時間間隔を表しています
 
-3. 再度 START / STOP ボタンを押すと、タイマーが停止し、作業の記録を終了します
+3. START / STOP ボタンを押すことで、タイマーが動き出し、作業の記録を開始します
+
+4. 再度 START / STOP ボタンを押すと、タイマーが停止し、作業の記録を終了します
 
 4. timane_csvdata フォルダに、日付ごとの CSV ファイルが作成されます
 
