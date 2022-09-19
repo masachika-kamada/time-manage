@@ -87,16 +87,15 @@ def main():
             if time.time() - last_time > INTERVAL:
                 last_time = time.time()
                 # ウインドウのタイトルを取得
-                hwnd = win32gui.GetForegroundWindow()
-                _, pid = win32process.GetWindowThreadProcessId(hwnd)
-                p = psutil.Process(pid)
-                title = p.name()
-                if title != prev:
-                    prev = title
+                win_name = win32gui.GetWindowText(win32gui.GetForegroundWindow())
+                if win_name != prev:
+                    prev = win_name
+                    pid = win32process.GetWindowThreadProcessId(win32gui.GetForegroundWindow())
+                    exe_name = psutil.Process(pid[-1]).name()
                     with open(fname, mode="a", newline="", encoding="shift-jis", errors="ignore") as f:
                         writer = csv.writer(f)
                         now = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
-                        writer.writerow([now, title, p.exe()])
+                        writer.writerow([now, win_name, exe_name])
 
 
 if __name__ == "__main__":

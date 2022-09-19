@@ -36,7 +36,7 @@ def calc_time_diff(l):
             continue
         l[i][0] = int((prev - t).total_seconds())
         prev = t
-        if "timane" in l[i][2] or l[i][2] == "":
+        if "timane" in l[i][2] or l[i][1] == "":
             timane_idx.append(i)
     for i in timane_idx:
         l.pop(i)
