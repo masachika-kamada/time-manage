@@ -1,7 +1,7 @@
 import csv
 import datetime
-from pprint import pprint
 import matplotlib.pyplot as plt
+# import numpy as np
 
 
 def show_result(filename, data_mode, chart_mode, win_name="result"):
@@ -141,20 +141,34 @@ def make_table(d, win_name):
         plt.show()
 
 
+# def show_time_flow(filename):
+#     if filename == "":
+#         return
+#     data = read_csv(filename)
+#     data = calc_time_diff(data)
+#     print(data)
+#     # data = calc_exe_time(data)
+#     labels = [row[2] for row in data]
+#     sizes = [int(row[0]) for row in data]
+#     normalized = (np.array(sizes) / sum(sizes)).reshape(1, -1)
+#     N, K = 1, len(labels)
+#     tick_labels = ["a"]
+
+#     print(normalized.shape)
+#     cumulative = 0
+#     tick = [0]
+
+#     for k in range(K):
+#         color = plt.cm.viridis(float(k) / K, 1)
+#         plt.barh(tick, normalized[:, k], left=cumulative, color=color, label=labels[k])
+#         cumulative += normalized[:, k]
+
+#     plt.xlim((0, 1))
+#     plt.yticks(tick, tick_labels)
+#     plt.legend()
+#     plt.show()
+
+
 if __name__ == "__main__":
     raw = read_csv("timane/test.csv")
-    pprint(raw)
-    l = calc_time_diff(raw)
-    pprint(l)
-
-    exe_time = calc_exe_time(l)
-    exe_time = sort_and_cut(exe_time, 10)
-    pprint(exe_time)
-    make_pie_chart(exe_time)
-    # make_table(exe_time)
-
-    # page_time = calc_page_time(l)
-    # page_time = sort_and_cut(page_time, 10)
-    # pprint(page_time)
-    # make_pie_chart(page_time)
-    # make_table(page_time)
+    # show_time_flow("timane_csvdata/20220916.csv")

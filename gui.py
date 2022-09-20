@@ -7,6 +7,7 @@ def create_layout():
             sg.Tab("計測", __create_measure(), key='tab1'),
             sg.Tab("可視化", __create_file_select(), key='tab2'),
             sg.Tab("比較・可視化", __create_file_compare(), key='tab3'),
+            # sg.Tab("時系列", __create_time_flow(), key='tab4'),
         ]])],
     ]
     return layout
@@ -53,6 +54,18 @@ def __create_file_compare():
         [sg.Button("閲覧ページ / 円グラフ", font=font, pad=((15, 10), (1, 0)))],
     ]
     return layout
+
+
+# def __create_time_flow():
+#     font = ("游明朝", 12)
+#     sg.theme("GreenMono")
+#     layout = [
+#         [sg.Text("ファイルを選択して下さい", font=font, pad=[(15, 0), (15, 0)])],
+#         [sg.InputText(size=(21, 1), pad=[(15, 0), (0, 0)]), sg.FileBrowse(key="file3")],
+#         [sg.Button("実行ファイル / 帯グラフ", font=font, pad=((15, 10), (7, 0)))],
+#         # [sg.Button("閲覧ページ / 帯グラフ", font=font, pad=((15, 10), (1, 0)))],
+#     ]
+#     return layout
 
 
 def __time_input_text_temp(key, font, default_text=""):

@@ -104,6 +104,9 @@ def main():
             show_result(values["file2"], "page", "pie", "user2")
             plt.show()
 
+        # elif event == "実行ファイル / 帯グラフ":
+        #     show_time_flow(values["file3"])
+
         elif event == sg.WIN_CLOSED:
             r.finishEvent()
             window.close()
