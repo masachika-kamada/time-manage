@@ -91,11 +91,16 @@ def main():
                 if win_name != prev:
                     prev = win_name
                     pid = win32process.GetWindowThreadProcessId(win32gui.GetForegroundWindow())
-                    exe_name = psutil.Process(pid[-1]).name()
-                    with open(fname, mode="a", newline="", encoding="shift-jis", errors="ignore") as f:
-                        writer = csv.writer(f)
-                        now = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
-                        writer.writerow([now, win_name, exe_name])
+                    if pid[-1] <= 0:  # 例外処理への対応
+                        continue
+                    try:
+                        exe_name = psutil.Process(pid[-1]).name()
+                        with open(fname, mode="a", newline="", encoding="shift-jis", errors="ignore") as f:
+                            writer = csv.writer(f)
+                            now = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
+                            writer.writerow([now, win_name, exe_name])
+                    except Exception as e:
+                        pass
 
 
 if __name__ == "__main__":
