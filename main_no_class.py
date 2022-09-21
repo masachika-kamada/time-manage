@@ -16,7 +16,7 @@ def finishEvent(fname):  # STOPボタン押下処理
     with open(fname, mode="a", newline="", encoding="shift-jis", errors="ignore") as f:
         writer = csv.writer(f)
         now = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
-        writer.writerow([now, "タイマネ", "python.exe"])
+        writer.writerow([now, "タイマネ", "timane.exe"])
     print("=== STOP ===")
 
 
