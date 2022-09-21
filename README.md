@@ -6,7 +6,7 @@
 
 ## ツールのダウンロード
 
-使用するには [こちら](https://github.com/masachika-kamada/time-manage/releases/tag/v1.0.0) のリリースページから実行ファイル (timane.exe) をダウンロードしてください<br>
+使用するには [こちら](https://github.com/masachika-kamada/time-manage/releases) のリリースページから実行ファイル (timane.exe) をダウンロードしてください<br>
 ※メモリが貧弱な場合、timane.zip をダウンロード、展開し、フォルダ内の timane.exe を実行してください
 
 ## 使い方
@@ -34,3 +34,13 @@
 2. Browse ボタンを押して、可視化する CSV ファイルを選択します (timane_csvdata フォルダ内の CSV ファイルを選択してください)
 
 3. 可視化するデータとその形式をボタンで選択すると、CSV ファイルに保存した作業の記録を可視化できます
+
+### 比較・可視化
+
+1. timane.exeを起動し、「比較・可視化」のタブを選択すると、以下の画面が表示されます
+
+![](./images/compare.png)
+
+2. Browse ボタンを押して、可視化する 2 種類の CSV ファイルを選択します
+
+3. 可視化するデータをボタンで選択すると、2 つのウィンドウが立ち上がり CSV ファイルに保存した作業の記録を比較できます
