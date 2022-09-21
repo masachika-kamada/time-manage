@@ -8,6 +8,8 @@ def show_result(filename, data_mode, chart_mode, win_name="result"):
     if filename == "":
         return
     data = read_csv(filename)
+    if len(data) == 0:
+        return
     data = calc_time_diff(data)
     if data_mode == "exe":
         data = calc_exe_time(data)
