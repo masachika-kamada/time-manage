@@ -2,6 +2,7 @@ import csv
 import datetime
 import matplotlib.pyplot as plt
 # import numpy as np
+import re
 
 
 def show_result(filename, data_mode, chart_mode, win_name="result"):
@@ -37,6 +38,8 @@ def calc_time_diff(l):
             prev = t
             continue
         l[i][0] = int((prev - t).total_seconds())
+        if l[i][2] == "msedge.exe":
+            l[i][1] = re.sub(" および他 [\d]+ ページ", "", l[i][1])
         prev = t
         if "timane" in l[i][2] or l[i][1] == "":
             timane_idx.append(i)
