@@ -1,4 +1,2 @@
-pyinstaller main_no_class.py --onefile --noconsole --clean --name timane --icon=timane2.ico
-pyinstaller main_no_class.py --onedir --noconsole --clean --name timane --icon=timane2.ico
 pyinstaller main.py --onefile --noconsole --clean --name timane --icon=timane2.ico
 pyinstaller main.py --onedir --noconsole --clean --name timane --icon=timane2.ico

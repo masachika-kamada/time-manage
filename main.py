@@ -1,7 +1,6 @@
 import os
 import time
 import datetime
-import threading
 import sys
 import PySimpleGUI as sg
 import win32gui
@@ -13,58 +12,46 @@ from gui import create_layout
 from visualize import show_result
 
 
-# スレッド処理のクラス
-class Recorder():
-    dir_ref = "./timane_csvdata"
+def finish_event(fname):  # STOPボタン押下処理
+    with open(fname, mode="a", newline="", encoding="shift-jis", errors="ignore") as f:
+        writer = csv.writer(f)
+        now = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
+        writer.writerow([now, "タイマネ", "timane.exe"])
+    print("=== STOP ===")
 
-    def __init__(self):  # 初期化
-        self.ROOP = False  # ループのフラグ
-        if not os.path.exists(self.dir_ref):
-            os.mkdir(self.dir_ref)
-        self.fname = self.dir_ref + datetime.datetime.now().strftime("/%Y%m%d.csv")
 
-    # ループ処理関数
-    def __target(self):
-        prev = ""
-        while self.ROOP:
-            win_name = win32gui.GetWindowText(win32gui.GetForegroundWindow())
-            print(win_name, datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S"))
-            if win_name != prev:
-                prev = win_name
-                pid = win32process.GetWindowThreadProcessId(win32gui.GetForegroundWindow())
-                exe_name = psutil.Process(pid[-1]).name()
-                with open(self.fname, mode="a", newline="", encoding="shift-jis", errors="ignore") as f:
-                    writer = csv.writer(f)
-                    now = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
-                    writer.writerow([now, win_name, exe_name])
-            time.sleep(self.INTERVAL)
+def update_time(elapsed_time):
+    h = elapsed_time.seconds // 3600
+    m = elapsed_time.seconds % 3600 // 60
+    s = elapsed_time.seconds % 60
+    return f"{h:02d}:{m:02d}:{s:02d}"
 
-    # スレッドをスタートさせる
-    def __start(self):
-        if threading.active_count() == 1:
-            self.thread = threading.Thread(target=self.__target)
-            self.thread.start()
 
-    def startEvent(self, interval):  # STARTボタン押下時の処理
-        print("=== START ===")
-        self.ROOP = True
-        self.INTERVAL = int(interval)
-        self.__start()
-
-    def finishEvent(self):  # STOPボタン押下処理
-        with open(self.fname, mode="a", newline="", encoding="shift-jis", errors="ignore") as f:
-            writer = csv.writer(f)
-            now = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
-            writer.writerow([now, "タイマネ", "python.exe"])
-        print("=== STOP ===")
-        self.ROOP = False  # ループ停止->自動的にスレッド破棄
+def get_active_window(prev):
+    # ウインドウのタイトルを取得
+    win_name = win32gui.GetWindowText(win32gui.GetForegroundWindow())
+    if win_name != prev:
+        pid = win32process.GetWindowThreadProcessId(win32gui.GetForegroundWindow())
+        if pid[-1] <= 0:  # 例外処理への対応
+            return False, None, None
+        try:
+            exe_name = psutil.Process(pid[-1]).name()
+            return True, win_name, exe_name
+        except Exception as e:
+            pass
+    return False, None, None
 
 
 def main():
-    # スレッド処理のインスタンス生成
-    r = Recorder()
+    dir_ref = "./timane_csvdata"
+    if not os.path.exists(dir_ref):
+        os.mkdir(dir_ref)
+    fname = dir_ref + datetime.datetime.now().strftime("/%Y%m%d.csv")
     is_running = False
     start_time = 0
+    prev = ""
+    INTERVAL = 1
+    last_time = time.time()
 
     # ウインドウの表示、設定
     window = sg.Window("タイマネ", create_layout(), finalize=True)
@@ -77,10 +64,11 @@ def main():
         if event == "START / STOP":
             is_running = not is_running
             if is_running:
-                r.startEvent(values["interval"])
+                INTERVAL = int(values["interval"])
                 start_time = datetime.datetime.now()
+                last_time = time.time()
             else:
-                r.finishEvent()
+                finish_event(fname)
 
         elif event == "実行ファイル / 円グラフ":
             show_result(values["file"], "exe", "pie")
@@ -104,22 +92,26 @@ def main():
             show_result(values["file2"], "page", "pie", "user2")
             plt.show()
 
-        # elif event == "実行ファイル / 帯グラフ":
-        #     show_time_flow(values["file3"])
-
         elif event == sg.WIN_CLOSED:
-            r.finishEvent()
+            finish_event(fname)
             window.close()
             sys.exit()
 
         # タイマーの表示
         if is_running:
             now = datetime.datetime.now()
-            elapsed_time = now - start_time
-            h = elapsed_time.seconds // 3600
-            m = elapsed_time.seconds % 3600 // 60
-            s = elapsed_time.seconds % 60
-            window["-OUTPUT-"].update(f"{h:02d}:{m:02d}:{s:02d}")
+            window["-OUTPUT-"].update(update_time(now - start_time))
+
+            if time.time() - last_time > INTERVAL:
+                last_time = time.time()
+                # ウインドウのタイトルを取得
+                ret, win_name, exe_name = get_active_window(prev)
+                if ret:
+                    prev = win_name
+                    with open(fname, mode="a", newline="", encoding="shift-jis", errors="ignore") as f:
+                        writer = csv.writer(f)
+                        now = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
+                        writer.writerow([now, win_name, exe_name])
 
 
 if __name__ == "__main__":
